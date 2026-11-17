@@ -1,0 +1,148 @@
+{
+  "baseline_mae": 0.1734334852271057,
+  "default_reg": "xgb_change",
+  "default_clf": "xgb",
+  "regression": {
+    "linear_level": {
+      "name": "Linear Regression",
+      "kind": "level",
+      "MAE": 0.1698113887582983,
+      "RMSE": 0.31690153202219146,
+      "R2": 0.9537315716804576,
+      "vs_baseline": 2.0884643262887668,
+      "val_MAE": 0.15898328796501374,
+      "best_round": null
+    },
+    "ridge_level": {
+      "name": "Ridge",
+      "kind": "level",
+      "MAE": 0.16981082462089894,
+      "RMSE": 0.3168958129897559,
+      "R2": 0.9537332416519022,
+      "vs_baseline": 2.0887896022287684,
+      "val_MAE": 0.15898124137626835,
+      "best_round": null
+    },
+    "knn_level": {
+      "name": "KNN",
+      "kind": "level",
+      "MAE": 0.2561758537899946,
+      "RMSE": 0.4029250748634861,
+      "R2": 0.9252029171422105,
+      "vs_baseline": -47.70841596969602,
+      "val_MAE": 0.2529955458636849,
+      "best_round": null
+    },
+    "tree_level": {
+      "name": "Decision Tree",
+      "kind": "level",
+      "MAE": 0.20222924048378738,
+      "RMSE": 0.37276612033510304,
+      "R2": 0.9359809924599449,
+      "vs_baseline": -16.60334232398925,
+      "val_MAE": 0.21107508353400806,
+      "best_round": null
+    },
+    "rf_level": {
+      "name": "Random Forest",
+      "kind": "level",
+      "MAE": 0.19337996668051238,
+      "RMSE": 0.3422424052092814,
+      "R2": 0.9460360528142799,
+      "vs_baseline": -11.500940217679071,
+      "val_MAE": 0.19207564412777153,
+      "best_round": null
+    },
+    "xgb_level": {
+      "name": "XGBoost (original)",
+      "kind": "level",
+      "MAE": 0.1843709841766808,
+      "RMSE": 0.3174959975569579,
+      "R2": 0.9535578219123602,
+      "vs_baseline": -6.306451683913745,
+      "val_MAE": 0.17952217375047963,
+      "best_round": 71
+    },
+    "ridge_change": {
+      "name": "Ridge (change target)",
+      "kind": "change",
+      "MAE": 0.16827775485821286,
+      "RMSE": 0.31495793873953,
+      "R2": 0.9542973703978659,
+      "vs_baseline": 2.972742179597881,
+      "val_MAE": 0.16073872264830372,
+      "best_round": null
+    },
+    "rf_change": {
+      "name": "Random Forest (change)",
+      "kind": "change",
+      "MAE": 0.15881075237540596,
+      "RMSE": 0.2939375027273171,
+      "R2": 0.9601942262628101,
+      "vs_baseline": 8.43132041805637,
+      "val_MAE": 0.15241897659521603,
+      "best_round": null
+    },
+    "xgb_change": {
+      "name": "XGBoost (improved)",
+      "kind": "change",
+      "MAE": 0.15873832609814217,
+      "RMSE": 0.3031439848074049,
+      "R2": 0.9576616450076949,
+      "vs_baseline": 8.47308067973187,
+      "val_MAE": 0.14992490987093418,
+      "best_round": 56
+    }
+  },
+  "classification": {
+    "logreg": {
+      "name": "Logistic Regression",
+      "Accuracy": 0.8283154648259656,
+      "F1": 0.8243743265010272,
+      "AUC": 0.8819958664581055,
+      "val_Accuracy": 0.848910584593404
+    },
+    "nb": {
+      "name": "Naive Bayes",
+      "Accuracy": 0.7701571449552064,
+      "F1": 0.7523465131766478,
+      "AUC": 0.8653932878280979,
+      "val_Accuracy": 0.8058102155018455
+    },
+    "tree": {
+      "name": "Decision Tree",
+      "Accuracy": 0.8098105448670877,
+      "F1": 0.8070804380683738,
+      "AUC": 0.8751225808064826,
+      "val_Accuracy": 0.8424812477675914
+    },
+    "knn": {
+      "name": "KNN",
+      "Accuracy": 0.8175943604053458,
+      "F1": 0.8142993149381843,
+      "AUC": 0.8732383713978764,
+      "val_Accuracy": 0.8353375401833552
+    },
+    "rf": {
+      "name": "Random Forest",
+      "Accuracy": 0.834630635923043,
+      "F1": 0.8308572731072088,
+      "AUC": 0.8923889755546269,
+      "val_Accuracy": 0.85403024169544
+    },
+    "xgb": {
+      "name": "XGBoost",
+      "Accuracy": 0.834630635923043,
+      "F1": 0.8300403544022743,
+      "AUC": 0.8969865151868133,
+      "val_Accuracy": 0.8616501964519586
+    },
+    "gb": {
+      "name": "Gradient Boosting",
+      "Accuracy": 0.8359524159201057,
+      "F1": 0.8315233599221508,
+      "AUC": 0.8938469145559171,
+      "val_Accuracy": 0.8599833313489701
+    }
+  }
+}
