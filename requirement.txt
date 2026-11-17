@@ -1,0 +1,8 @@
+python-telegram-bot[webhooks]==21.6
+pandas
+numpy
+scikit-learn
+xgboost
+joblib
+matplotlib
+python-dotenv
