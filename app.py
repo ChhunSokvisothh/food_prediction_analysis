@@ -1,4 +1,3 @@
-import asyncio
 import io
 import itertools
 import json
@@ -169,7 +168,7 @@ FALLBACK_BENCH = {
     "margin": [("OLD  Gradient Boosting", 0.843, 0.906)],
 }
 
-# alert storage (in memory)
+# alert storage (in memory, resets on every restart / sleep)
 alerts = {}
 
 
@@ -536,9 +535,6 @@ def benchmark_text():
 
 
 # =============================================================================
-# Commands
-# =============================================================================
-# =============================================================================
 # Guided mode: send a command with no details and the bot asks with buttons
 # =============================================================================
 def split_args(text):
@@ -855,8 +851,6 @@ async def post_init(application):
         log.warning("Could not set the command menu: %s", e)
 
 
-
-
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.effective_message.reply_text(
         "🇰🇭 *Cambodia Food Price Prediction Bot*\n\n"
@@ -1136,6 +1130,11 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
 
+# =============================================================================
+# Weekly broadcast
+# Triggered by the GitHub Action (broadcast_once.py) or manually with /broadcast.
+# It is NOT scheduled inside the bot anymore, so restarts never spam the channel.
+# =============================================================================
 async def weekly_broadcast(app):
     month = pd.Timestamp.now().month
     month_feats = get_month_features(month)
@@ -1181,7 +1180,6 @@ async def weekly_broadcast(app):
         parse_mode='Markdown'
     )
     print("Weekly broadcast sent ✅")
-
 
 
 # =============================================================================
@@ -1657,7 +1655,7 @@ async def run_chart(update: Update, context: ContextTypes.DEFAULT_TYPE, commodit
         buf = io.BytesIO()
         plt.savefig(buf, format='png', dpi=150)
         buf.seek(0)
-        plt.close()
+        plt.close(fig)
 
         end = (now + pd.DateOffset(months=months)).strftime('%B %Y')
         caption = (f"📈 *{commodity} — {province}*\n"
@@ -1762,20 +1760,26 @@ def main():
     app.add_handler(CallbackQueryHandler(menu_callback, pattern=r"^m:"))
     app.add_handler(CallbackQueryHandler(button_handler))
 
-    # fix — start scheduler inside job_queue instead
-    job_queue = app.job_queue
-    job_queue.run_repeating(
-        lambda context: asyncio.create_task(weekly_broadcast(context.application)),
-        interval=604800,  # 7 days in seconds
-        first=10          # first run 10 seconds after bot starts (for testing)
-    )
-
     log.info("Models loaded: price=%s | margin=%s | new anomaly stats=%s | default version=%s",
              {k: v["name"] for k, v in REG_MODELS.items()},
              {k: v["name"] for k, v in CLF_MODELS.items()},
              NEW_ANOMALY, DEFAULT_VERSION)
-    print("Bot running 🚀 Weekly broadcast scheduled")
-    app.run_polling()
+
+    base_url = os.getenv("RENDER_EXTERNAL_URL")
+    if base_url:
+        # Render: webhook mode (Render sets RENDER_EXTERNAL_URL and PORT itself)
+        print("Bot running 🚀 (webhook)")
+        app.run_webhook(
+            listen="0.0.0.0",
+            port=int(os.getenv("PORT", 10000)),
+            url_path=BOT_TOKEN,
+            webhook_url=f"{base_url}/{BOT_TOKEN}",
+            drop_pending_updates=True,
+        )
+    else:
+        # local: plain polling
+        print("Bot running 🚀 (polling)")
+        app.run_polling()
 
 
 if __name__ == "__main__":
