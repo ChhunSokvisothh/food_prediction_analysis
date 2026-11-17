@@ -1,0 +1,23 @@
+name: weekly-broadcast
+on:
+  schedule:
+    - cron: "0 1 * * 1"   # Mon 08:00 Cambodia time (UTC+7)
+  workflow_dispatch:       # manual "Run workflow" button for testing
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        # add `with: { lfs: true }` if your .pkl files are in Git LFS
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python broadcast_once.py
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          ADMIN_ID: ${{ secrets.ADMIN_ID }}
+          MODELS_DIR: models
